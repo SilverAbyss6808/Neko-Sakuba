@@ -1,0 +1,21 @@
+~ vase_full
+A vase with blue flowers. Your friend's favorite.
+* You got a Blue Flower.
+=> END
+~ vase_empty
+An empty vase. Not much to see here.
+=> END
+~ vase_really_empty
+The vase is empty. What do you hope to achieve with this.
+=> END
+
+~ tree_first
+A tree. 
+What a tree-at.
+I'm... sorry. 
+(I'm not.)
+=> END
+
+~ tree_other
+There's only so many times you can interact with a tree.
+=> END

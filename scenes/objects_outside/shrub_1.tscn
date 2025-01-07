@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://kh4u1pnnkudc"]
+
+[ext_resource type="Texture2D" uid="uid://csrpuowex2luf" path="res://assets/object_texture_sheets/outside_interacts.png" id="1_5d8cs"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_73rpa"]
+atlas = ExtResource("1_5d8cs")
+region = Rect2(0, 96, 64, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kpmiv"]
+size = Vector2(50, 17)
+
+[node name="Shrub1" type="StaticBody2D"]
+z_as_relative = false
+y_sort_enabled = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_73rpa")
+centered = false
+offset = Vector2(-32, -61)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -8.5)
+shape = SubResource("RectangleShape2D_kpmiv")

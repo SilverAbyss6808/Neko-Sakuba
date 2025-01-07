@@ -1,0 +1,53 @@
+[gd_scene load_steps=7 format=3 uid="uid://ccxjhxjorsjhx"]
+
+[ext_resource type="Script" path="res://scripts/object_scripts/vase.gd" id="1_kh1nv"]
+[ext_resource type="Texture2D" uid="uid://bj4ln2agp48jc" path="res://assets/object_texture_sheets/bedroom_interacts.png" id="2_6hygg"]
+[ext_resource type="PackedScene" uid="uid://dqlk28ia73xt" path="res://scenes/utilities/interaction_area.tscn" id="2_u23fy"]
+[ext_resource type="Resource" uid="uid://db0vl7uhrypcs" path="res://dialogue/dialogue_scripts/dialogue_int_objects.dialogue" id="4_pv8vg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_igdw1"]
+size = Vector2(12, 7)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4ecwg"]
+
+[node name="vase" type="StaticBody2D"]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_kh1nv")
+
+[node name="vase_full_nohighlight" type="Sprite2D" parent="."]
+texture = ExtResource("2_6hygg")
+region_enabled = true
+region_rect = Rect2(16, 0, 16, 32)
+
+[node name="vase_empty_nohighlight" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_6hygg")
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 32)
+
+[node name="vase_full_highlight" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_6hygg")
+region_enabled = true
+region_rect = Rect2(48, 0, 16, 32)
+
+[node name="vase_empty_highlight" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_6hygg")
+region_enabled = true
+region_rect = Rect2(32, 0, 16, 32)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 11.5)
+shape = SubResource("RectangleShape2D_igdw1")
+
+[node name="interaction_area" parent="." instance=ExtResource("2_u23fy")]
+dialogue_file = ExtResource("4_pv8vg")
+dialogue_name = "vase_empty"
+
+[node name="interaction_collision_area" type="CollisionShape2D" parent="interaction_area"]
+position = Vector2(0, 4)
+shape = SubResource("CapsuleShape2D_4ecwg")
+
+[connection signal="area_entered" from="interaction_area" to="." method="_on_interaction_area_area_entered"]

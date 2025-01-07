@@ -1,0 +1,44 @@
+[gd_scene load_steps=8 format=3 uid="uid://cb5oxqfb3l7yo"]
+
+[ext_resource type="Script" path="res://scripts/object_scripts/tree_1.gd" id="1_i6w11"]
+[ext_resource type="Texture2D" uid="uid://csrpuowex2luf" path="res://assets/object_texture_sheets/outside_interacts.png" id="1_rx6cu"]
+[ext_resource type="PackedScene" uid="uid://dqlk28ia73xt" path="res://scenes/utilities/interaction_area.tscn" id="2_knny4"]
+[ext_resource type="Resource" uid="uid://db0vl7uhrypcs" path="res://dialogue/dialogue_scripts/dialogue_int_objects.dialogue" id="3_h5jsa"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y27w8"]
+atlas = ExtResource("1_rx6cu")
+region = Rect2(0, 0, 64, 96)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6smw2"]
+radius = 7.0
+height = 22.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c3nmi"]
+size = Vector2(41, 42)
+
+[node name="Tree1" type="StaticBody2D"]
+z_as_relative = false
+y_sort_enabled = true
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_i6w11")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+y_sort_enabled = true
+texture = SubResource("AtlasTexture_y27w8")
+offset = Vector2(0, -42)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(0, -7)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_6smw2")
+
+[node name="interaction_area" parent="." instance=ExtResource("2_knny4")]
+visible = false
+dialogue_file = ExtResource("3_h5jsa")
+dialogue_name = "tree_other"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="interaction_area"]
+position = Vector2(0, -8)
+shape = SubResource("RectangleShape2D_c3nmi")

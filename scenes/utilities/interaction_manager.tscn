@@ -1,0 +1,61 @@
+[gd_scene load_steps=6 format=3 uid="uid://b78q0amafxlcm"]
+
+[ext_resource type="Script" path="res://scripts/global_scripts/interaction_manager.gd" id="1_2a604"]
+[ext_resource type="Texture2D" uid="uid://ceodayjb8amvs" path="res://assets/sprites/dialogue_box_placeholder.png" id="2_yv2k2"]
+[ext_resource type="FontFile" uid="uid://del32o54l1kjc" path="res://assets/fonts/Minimal5x7.ttf" id="3_b23dg"]
+[ext_resource type="PackedScene" uid="uid://cfs7tibx44xph" path="res://scenes/utilities/dialogue_manager.tscn" id="4_7dpdh"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_m63l4"]
+font = ExtResource("3_b23dg")
+
+[node name="InteractionManager" type="Node2D"]
+process_mode = 3
+script = ExtResource("1_2a604")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+z_index = 5
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -10.0
+offset_top = -7.0
+offset_right = 9.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_yv2k2")
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
+[node name="dialogue_text" type="Label" parent="NinePatchRect"]
+top_level = true
+z_index = 5
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.0015625
+anchor_top = 0.0111111
+anchor_right = -0.0015625
+anchor_bottom = 0.0111111
+offset_left = -10.0
+offset_top = -7.0
+offset_right = 9.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+text = "[e]"
+label_settings = SubResource("LabelSettings_m63l4")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+text_overrun_behavior = 3
+visible_characters = -3
+visible_ratio = -1.0
+metadata/font_author = "kheftel on opengameart.com"
+metadata/_edit_use_anchors_ = true
+
+[node name="DialogueManager" parent="." instance=ExtResource("4_7dpdh")]

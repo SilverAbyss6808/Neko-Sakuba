@@ -1,0 +1,31 @@
+[gd_scene load_steps=6 format=3 uid="uid://bm47ecbrvike4"]
+
+[ext_resource type="Script" path="res://scripts/object_scripts/enter_player_house.gd" id="1_kri44"]
+[ext_resource type="Texture2D" uid="uid://dbkwqnkxblyyd" path="res://assets/object_texture_sheets/player_house.png" id="1_kxd81"]
+[ext_resource type="PackedScene" uid="uid://dqlk28ia73xt" path="res://scenes/utilities/interaction_area.tscn" id="2_wi2nt"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ph852"]
+size = Vector2(88, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8221s"]
+size = Vector2(45, 39)
+
+[node name="player_house_sprite" type="StaticBody2D"]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_kri44")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_kxd81")
+offset = Vector2(0, -48)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -10)
+shape = SubResource("RectangleShape2D_ph852")
+
+[node name="interaction_area" parent="." instance=ExtResource("2_wi2nt")]
+position = Vector2(-1, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="interaction_area"]
+position = Vector2(9.5, -13.5)
+shape = SubResource("RectangleShape2D_8221s")

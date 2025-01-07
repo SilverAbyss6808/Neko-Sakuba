@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://b6hdmcsbjqqnq"]
+
+[ext_resource type="Texture2D" uid="uid://csrpuowex2luf" path="res://assets/object_texture_sheets/outside_interacts.png" id="1_osxas"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_68r5w"]
+atlas = ExtResource("1_osxas")
+region = Rect2(32, 240, 32, 16)
+
+[node name="Shrub3" type="StaticBody2D"]
+z_as_relative = false
+y_sort_enabled = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_as_relative = false
+y_sort_enabled = true
+texture = SubResource("AtlasTexture_68r5w")
+centered = false
+offset = Vector2(-16, -16)
