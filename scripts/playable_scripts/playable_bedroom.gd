@@ -8,4 +8,3 @@ func _ready() -> void:
 	
 func _on_interact():
 	interaction_area.switch_scene("res://scenes/playable/playable_outside.tscn")
-	
