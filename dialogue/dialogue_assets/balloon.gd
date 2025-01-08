@@ -1,15 +1,11 @@
 extends CanvasLayer
+## A basic dialogue balloon for use with Dialogue Manager.
 
 ## The action to use for advancing the dialogue
-@export var next_action: StringName = &"interact"
+@export var next_action: StringName = &"ui_accept"
 
 ## The action to use to skip typing the dialogue
-@export var skip_action: StringName = &"escape"
-
-@onready var balloon: Control = %Balloon
-@onready var character_label: RichTextLabel = %CharacterLabel
-@onready var dialogue_label: DialogueLabel = %DialogueLabel
-@onready var responses_menu: DialogueResponsesMenu = %ResponsesMenu
+@export var skip_action: StringName = &"ui_cancel"
 
 ## The dialogue resource
 var resource: DialogueResource
@@ -23,6 +19,9 @@ var is_waiting_for_input: bool = false
 ## See if we are running a long mutation and should hide the balloon
 var will_hide_balloon: bool = false
 
+## A dictionary to store any ephemeral variables
+var locals: Dictionary = {}
+
 var _locale: String = TranslationServer.get_locale()
 
 ## The current line
@@ -35,7 +34,6 @@ var dialogue_line: DialogueLine:
 		# The dialogue has finished so close the balloon
 		if not next_dialogue_line:
 			queue_free()
-			Global.dialogue_is_done_running()
 			return
 
 		# If the node isn't ready yet then none of the labels will be ready yet either
@@ -76,6 +74,18 @@ var dialogue_line: DialogueLine:
 			balloon.grab_focus()
 	get:
 		return dialogue_line
+
+## The base balloon anchor
+@onready var balloon: Control = %Balloon
+
+## The label showing the name of the currently speaking character
+@onready var character_label: RichTextLabel = %CharacterLabel
+
+## The label showing the currently spoken dialogue
+@onready var dialogue_label: DialogueLabel = %DialogueLabel
+
+## The menu of responses
+@onready var responses_menu: DialogueResponsesMenu = %ResponsesMenu
 
 
 func _ready() -> void:
