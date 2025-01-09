@@ -4,14 +4,13 @@ extends CanvasLayer
 @onready var margin_container: MarginContainer = $MarginContainer
 @onready var color_rect: ColorRect = $MarginContainer/ColorRect
 @onready var v_box_container: VBoxContainer = $MarginContainer/VBoxContainer
-@onready var rich_text_label: RichTextLabel = $MarginContainer/VBoxContainer/RichTextLabel
+@onready var label: Label = $MarginContainer/VBoxContainer/Label
 @onready var line_edit: LineEdit = $MarginContainer/VBoxContainer/LineEdit
 
 var window_size_x = DisplayServer.window_get_size().x
 var window_size_y = DisplayServer.window_get_size().y
 var terminal_font_size = window_size_y / 12 - 8
-
-var previous_entries = []
+var previous_entries: Array
 
 func _ready() -> void:
 	# connect to text submission stuff
@@ -31,7 +30,6 @@ func _process(delta: float) -> void:
 		if debug_terminal.visible == true:
 			line_edit.clear()
 			line_edit.grab_focus()
-		update_console()
 	
 	# handles resizing of window
 	if DisplayServer.window_get_size().x != window_size_x || DisplayServer.window_get_size().y != window_size_y:
@@ -42,17 +40,16 @@ func _on_text_submitted(command):
 	var error = expression.parse(command)
 	
 	if error != OK:
-		# rich_text_label.text = 'ERROR: ' + expression.get_error_text()
-		previous_entries.push_back('\n' + expression.get_error_text())
-		update_console()
+		update_console('ERROR: ' + expression.get_error_text())
 		return
 		
 	var result = expression.execute()
 	
-	if not expression.has_execute_failed():
-		# rich_text_label.text = str(result)
-		previous_entries.push_back('\n' + str(result))
-		update_console()
+	if expression.has_execute_failed() == false:
+		update_console(str(result))
+	else:
+		update_console('Execution failed.')
+		
 		
 func resize_terminal():
 	# resize terminal (scales vbox automatically)
@@ -64,9 +61,9 @@ func resize_terminal():
 	
 	# change font size
 	terminal_font_size = window_size_y / 12 - 8
-	rich_text_label.add_theme_font_size_override("font_size", terminal_font_size)
+	label.add_theme_font_size_override("font_size", terminal_font_size)
 	line_edit.add_theme_font_size_override("font_size", terminal_font_size)
 	
-func update_console():
-	for i in previous_entries:
-		rich_text_label.text = rich_text_label.text + previous_entries[i]
+func update_console(string):
+	label.text = label.text + '\n' + string
+	line_edit.clear()
