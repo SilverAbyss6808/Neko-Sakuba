@@ -4,10 +4,26 @@ extends CharacterBody2D
 @export var speed_run = 150.0
 
 @onready var sprite = $AnimatedSprite2D
+@onready var user_interface: CanvasLayer = $Camera2D/UserInterface
 
 var last_pressed_key = "s"
 var can_move = true
 var speed = speed_walk
+
+var player_health = 50
+var player_max_health = 100
+var player_min_health = 0
+var player_health_regen_multiplier = 1
+
+var player_stamina = 50
+var player_max_stamina = 100
+var player_min_stamina = 0
+var player_stamina_regen_multiplier = 1
+
+var player_base_attack = 10
+var player_attack_multiplier = 1
+var player_base_defense = 10
+var player_defense_multiplier = 1
 
 func _ready():
 	Global.player = self
@@ -70,4 +86,53 @@ func _physics_process(_delta):
 			sprite.play("idle_left")
 		elif last_pressed_key == "d":
 			sprite.play("idle_right")
+
+func take_damage(damage_amount):
+	player_health -= damage_amount
+	user_interface.update_ui()
+	sprite_flash('red')
+	if player_health <= player_min_health:
+		player_die()
+
+# TODO: fill in once enemy class declared
+func deal_damage(target, damage_amount):
+	pass
+
+func heal_damage(heal_amount):
+	player_health += heal_amount
+	user_interface.update_ui()
+	sprite_flash('green')
+	if player_health >= player_max_health:
+		player_health = player_max_health
+		
+# TODO: show death screen, then reload last save
+func player_die():
+	print('You died!')
 	
+func lose_stamina(amt):
+	player_stamina -= amt
+	user_interface.update_ui()
+	
+func regen_stamina():
+	while player_stamina < player_max_stamina:
+		player_stamina += player_stamina_regen_multiplier
+		user_interface.update_ui()
+		
+	
+func sprite_flash(color):
+	var flash_time = 0.05
+	if color == 'red':
+		for i in range(0,5):
+			sprite.modulate = Color(1,0,0,0.5)
+			await get_tree().create_timer(flash_time).timeout
+			sprite.modulate = Color(1,1,1)
+			await get_tree().create_timer(flash_time).timeout
+		return
+	if color == 'green':
+		for i in range(0,5):
+			sprite.modulate = Color(0,1,0,0.5)
+			await get_tree().create_timer(flash_time).timeout
+			sprite.modulate = Color(1,1,1)
+			await get_tree().create_timer(flash_time).timeout
+		return
+	print('Color not red or green.')

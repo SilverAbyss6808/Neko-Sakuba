@@ -932,9 +932,6 @@ script = ExtResource("1_0eqfi")
 z_index = 1
 position = Vector2(88.6, 4.27)
 
-[node name="Camera2D2" type="Camera2D" parent="player"]
-zoom = Vector2(3, 3)
-
 [node name="objects" type="Node" parent="."]
 
 [node name="vase1" parent="objects" instance=ExtResource("3_y86ti")]

@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://qcoc45eqqxq3"]
+
+[ext_resource type="Script" path="res://scripts/utility_scripts/user_interface.gd" id="1_62mxv"]
+
+[node name="UserInterface" type="CanvasLayer"]
+script = ExtResource("1_62mxv")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HealthLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "Placeholder"
+
+[node name="StaminaLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Placeholder2"

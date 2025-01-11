@@ -128,13 +128,6 @@ script = ExtResource("1_2msxx")
 z_as_relative = false
 position = Vector2(350, 200)
 
-[node name="Camera2D2" type="Camera2D" parent="player"]
-zoom = Vector2(3, 3)
-limit_left = -63
-limit_top = -63
-limit_right = 977
-limit_bottom = 496
-
 [node name="walk_under_leaves" type="TileMapLayer" parent="."]
 z_index = 1
 position = Vector2(1, 0)

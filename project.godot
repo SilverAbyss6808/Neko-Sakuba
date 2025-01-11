@@ -21,6 +21,7 @@ DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
 Global="*res://scripts/global_scripts/global.gd"
 PlayerData="*res://scripts/global_scripts/player_data.gd"
 InteractionManager="*res://scenes/utilities/interaction_manager.tscn"
+DebugTerminal="*res://scenes/utilities/debug_terminal.tscn"
 
 [dialogue_manager]
 

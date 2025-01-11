@@ -7,4 +7,4 @@ func _ready() -> void:
 	interaction_area.interact = Callable(self, '_on_interact')
 	
 func _on_interact():
-	interaction_area.switch_scene("res://scenes/playable/playable_outside.tscn")
+	interaction_area.switch_scene("res://scenes/playable/map_farm.tscn")

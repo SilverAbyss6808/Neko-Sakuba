@@ -4,21 +4,23 @@ extends CanvasLayer
 @onready var margin_container: MarginContainer = $MarginContainer
 @onready var color_rect: ColorRect = $MarginContainer/ColorRect
 @onready var v_box_container: VBoxContainer = $MarginContainer/VBoxContainer
-@onready var label: Label = $MarginContainer/VBoxContainer/Label
+@onready var label: Label = $MarginContainer/VBoxContainer/ScrollContainer/Label
 @onready var line_edit: LineEdit = $MarginContainer/VBoxContainer/LineEdit
 
 var window_size_x = DisplayServer.window_get_size().x
 var window_size_y = DisplayServer.window_get_size().y
-var terminal_font_size = window_size_y / 12 - 8
+var terminal_font_size = window_size_y / 12 - 12
 var previous_entries: Array
 
 func _ready() -> void:
 	# connect to text submission stuff
 	line_edit.text_submitted.connect(self._on_text_submitted)
 	
+	# hides it to start out
+	debug_terminal.visible = false
+	line_edit.editable = false
+	
 	# dynamically set layout
-	debug_terminal.visible = true
-	line_edit.editable = true
 	line_edit.grab_focus()
 	resize_terminal()
 		
@@ -27,9 +29,11 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("debug"):
 		debug_terminal.visible = !debug_terminal.visible
 		line_edit.editable = !line_edit.editable
+		Global.unpause_scene()
 		if debug_terminal.visible == true:
 			line_edit.clear()
 			line_edit.grab_focus()
+			Global.pause_scene()
 	
 	# handles resizing of window
 	if DisplayServer.window_get_size().x != window_size_x || DisplayServer.window_get_size().y != window_size_y:
@@ -43,13 +47,12 @@ func _on_text_submitted(command):
 		update_console('ERROR: ' + expression.get_error_text())
 		return
 		
-	var result = expression.execute()
+	var result = expression.execute([], Global)
 	
 	if expression.has_execute_failed() == false:
 		update_console(str(result))
 	else:
 		update_console('Execution failed.')
-		
 		
 func resize_terminal():
 	# resize terminal (scales vbox automatically)
@@ -65,5 +68,5 @@ func resize_terminal():
 	line_edit.add_theme_font_size_override("font_size", terminal_font_size)
 	
 func update_console(string):
-	label.text = label.text + '\n' + string
+	label.text = label.text + '\n - ' + line_edit.text + '\n' + string
 	line_edit.clear()
