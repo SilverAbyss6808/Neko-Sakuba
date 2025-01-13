@@ -8,7 +8,7 @@ var current_scene: String
 var prev_scene: String
 
 func _ready():
-	var root = get_tree().get_root()
+	pass
 
 # DIALOGUE CONTROLS
 

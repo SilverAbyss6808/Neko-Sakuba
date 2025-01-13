@@ -1,0 +1,66 @@
+extends Node2D
+class_name Enemy
+
+var health
+var max_health
+var min_health
+var damage
+var scene
+var speed
+
+var chase_player = false
+var damage_player = false
+var player = null
+
+var enemy_type = { 
+	'pink_slime':[5,5,0,1,preload("res://scenes/enemies/enemy_pink_slime.tscn"),50]
+}
+
+func _ready() -> void:
+	# spawn_enemy('pink_slime', Vector2(500,-250))
+	pass
+	
+func _physics_process(delta: float) -> void:
+	if chase_player:
+		position += (player.position - position) / speed
+	if damage_player: # && typeof(damage) == TYPE_INT:
+		player.take_damage(damage)
+
+func _init(type, pos) -> void:
+	
+	health = enemy_type[type][0]
+	max_health = enemy_type[type][1]
+	min_health = enemy_type[type][2]
+	damage = enemy_type[type][3]
+	scene = enemy_type[type][4]
+	speed = enemy_type[type][5]
+	
+	position = pos
+	
+	print(type + ' spawned at ' + str(pos) + ' with health=' + str(health) + ', max_health=' + str(max_health) + ', min_health=' + str(min_health) + ', damage=' + str(damage) + ', speed=' + str(speed))
+	
+func take_damage(amount):
+	health -= amount
+	if health < min_health:
+		die()
+	
+func die():
+	# play death animation
+	get_tree().queue_free()
+
+func _on_detection_area_body_entered(body: Node2D) -> void:
+	player = body
+	chase_player = true
+	
+func _on_detection_area_body_exited(body: Node2D) -> void:
+	player = null
+	chase_player = false
+
+func _on_damage_area_body_entered(body: Node2D) -> void:
+	player = body
+	damage_player = true
+	
+func _on_damage_area_body_exited(body: Node2D) -> void:
+	player = null
+	damage_player = false
+	

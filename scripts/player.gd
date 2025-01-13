@@ -10,6 +10,8 @@ var last_pressed_key = "s"
 var can_move = true
 var speed = speed_walk
 
+var player_name = "Player"
+
 var player_health = 50
 var player_max_health = 100
 var player_min_health = 0
@@ -88,11 +90,14 @@ func _physics_process(_delta):
 			sprite.play("idle_right")
 
 func take_damage(damage_amount):
+	#if typeof(damage_amount) == TYPE_INT || typeof(damage_amount) == TYPE_FLOAT:
 	player_health -= damage_amount
 	user_interface.update_ui()
-	sprite_flash('red')
+	sprite_flash('red') # INCLUDES IFRAMES
 	if player_health <= player_min_health:
 		player_die()
+	#else:
+		#print('Damage not an integer or float.')
 
 # TODO: fill in once enemy class declared
 func deal_damage(target, damage_amount):
@@ -122,11 +127,13 @@ func regen_stamina():
 func sprite_flash(color):
 	var flash_time = 0.05
 	if color == 'red':
+		set_collision_layer_value(2, false)
 		for i in range(0,5):
 			sprite.modulate = Color(1,0,0,0.5)
 			await get_tree().create_timer(flash_time).timeout
 			sprite.modulate = Color(1,1,1)
 			await get_tree().create_timer(flash_time).timeout
+		set_collision_layer_value(2, true)
 		return
 	if color == 'green':
 		for i in range(0,5):

@@ -204,8 +204,9 @@ zoom = Vector2(3, 3)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -16)
 sprite_frames = SubResource("SpriteFrames_pl8t6")
-animation = &"walk_right"
+animation = &"walk_away"
 autoplay = "idle_forward"
+frame_progress = 0.788457
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -11)

@@ -13,8 +13,8 @@ offset_bottom = 40.0
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
-text = "Placeholder"
+text = "Health Placeholder"
 
 [node name="StaminaLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-text = "Placeholder2"
+text = "Stamina Placeholder"
