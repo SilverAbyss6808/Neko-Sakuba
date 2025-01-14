@@ -13,4 +13,4 @@ func _ready() -> void:
 	#slime.position = Vector2(500,-250)
 	
 	print(player.get_collision_layer_value(2))
-	print(enemy_pink_slime.detection_area.get_collision_mask_value(2))
+	print(enemy_pink_slime.get_collision_mask_value(2))
