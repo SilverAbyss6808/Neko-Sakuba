@@ -123,7 +123,6 @@ func regen_stamina():
 		player_stamina += player_stamina_regen_multiplier
 		user_interface.update_ui()
 		
-	
 func sprite_flash(color):
 	var flash_time = 0.05
 	if color == 'red':

@@ -1,4 +1,4 @@
-extends Node2D
+extends CharacterBody2D
 class_name Enemy
 
 var health
@@ -23,10 +23,12 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if chase_player:
 		position += (player.position - position) / speed
+		print('chasing player')
 	if damage_player: # && typeof(damage) == TYPE_INT:
 		player.take_damage(damage)
+		print('damaging player')
 
-func _init(type, pos) -> void:
+func _init(type) -> void:
 	
 	health = enemy_type[type][0]
 	max_health = enemy_type[type][1]
@@ -35,9 +37,7 @@ func _init(type, pos) -> void:
 	scene = enemy_type[type][4]
 	speed = enemy_type[type][5]
 	
-	position = pos
-	
-	print(type + ' spawned at ' + str(pos) + ' with health=' + str(health) + ', max_health=' + str(max_health) + ', min_health=' + str(min_health) + ', damage=' + str(damage) + ', speed=' + str(speed))
+	print(type + ' spawned with health=' + str(health) + ', max_health=' + str(max_health) + ', min_health=' + str(min_health) + ', damage=' + str(damage) + ', speed=' + str(speed))
 	
 func take_damage(amount):
 	health -= amount
@@ -49,18 +49,22 @@ func die():
 	get_tree().queue_free()
 
 func _on_detection_area_body_entered(body: Node2D) -> void:
+	print('detection body entered')
 	player = body
 	chase_player = true
 	
 func _on_detection_area_body_exited(body: Node2D) -> void:
+	print('detection body exited')
 	player = null
 	chase_player = false
 
 func _on_damage_area_body_entered(body: Node2D) -> void:
+	print('damage body entered')
 	player = body
 	damage_player = true
 	
 func _on_damage_area_body_exited(body: Node2D) -> void:
+	print('damage body exited')
 	player = null
 	damage_player = false
 	
