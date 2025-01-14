@@ -1,18 +1,19 @@
 extends CharacterBody2D
 class_name Enemy
 
-var health
-var max_health
-var min_health
-var damage
-var scene
-var speed
+static var health
+static var max_health
+static var min_health
+static var damage
+static var scene
+static var speed
 
 var chase_player = false
 var damage_player = false
 var player = null
 
-var enemy_type = { 
+static var enemy_type = { 
+	'default':[0,0,0,0,0,0],
 	'pink_slime':[5,5,0,1,preload("res://scenes/enemies/enemy_pink_slime.tscn"),50]
 }
 
@@ -23,21 +24,23 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if chase_player:
 		position += (player.position - position) / speed
-		print('chasing player')
-	if damage_player: # && typeof(damage) == TYPE_INT:
+	if damage_player:
 		player.take_damage(damage)
-		print('damaging player')
 
-func _init(type) -> void:
+static func new_enemy(type='default') -> Enemy:
 	
-	health = enemy_type[type][0]
-	max_health = enemy_type[type][1]
-	min_health = enemy_type[type][2]
-	damage = enemy_type[type][3]
-	scene = enemy_type[type][4]
-	speed = enemy_type[type][5]
-	
+	var spawned_enemy = enemy_type[type][4].instantiate()
+
+	spawned_enemy.health = enemy_type[type][0]
+	spawned_enemy.max_health = enemy_type[type][1]
+	spawned_enemy.min_health = enemy_type[type][2]
+	spawned_enemy.damage = enemy_type[type][3]
+	spawned_enemy.scene = enemy_type[type][4]
+	spawned_enemy.speed = enemy_type[type][5]
+
 	print(type + ' spawned with health=' + str(health) + ', max_health=' + str(max_health) + ', min_health=' + str(min_health) + ', damage=' + str(damage) + ', speed=' + str(speed))
+	
+	return spawned_enemy
 	
 func take_damage(amount):
 	health -= amount
@@ -46,25 +49,21 @@ func take_damage(amount):
 	
 func die():
 	# play death animation
-	get_tree().queue_free()
+	queue_free()
 
 func _on_detection_area_body_entered(body: Node2D) -> void:
-	print('detection body entered')
 	player = body
 	chase_player = true
 	
 func _on_detection_area_body_exited(body: Node2D) -> void:
-	print('detection body exited')
 	player = null
 	chase_player = false
 
 func _on_damage_area_body_entered(body: Node2D) -> void:
-	print('damage body entered')
 	player = body
 	damage_player = true
 	
 func _on_damage_area_body_exited(body: Node2D) -> void:
-	print('damage body exited')
 	player = null
 	damage_player = false
 	
