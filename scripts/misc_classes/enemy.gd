@@ -27,7 +27,7 @@ func _physics_process(delta: float) -> void:
 	if damage_player:
 		player.take_damage(damage)
 
-static func new_enemy(type='default') -> Enemy:
+static func new_enemy(type:='default',caller:Node2D=null, position:=Vector2(0,0)) -> Enemy:
 	
 	var spawned_enemy = enemy_type[type][4].instantiate()
 
@@ -39,6 +39,9 @@ static func new_enemy(type='default') -> Enemy:
 	spawned_enemy.speed = enemy_type[type][5]
 
 	print(type + ' spawned with health=' + str(health) + ', max_health=' + str(max_health) + ', min_health=' + str(min_health) + ', damage=' + str(damage) + ', speed=' + str(speed))
+	
+	spawned_enemy.global_position = position
+	caller.add_child(spawned_enemy)
 	
 	return spawned_enemy
 	
