@@ -132,7 +132,6 @@ func sprite_flash(color):
 			await get_tree().create_timer(flash_time).timeout
 			sprite.modulate = Color(1,1,1)
 			await get_tree().create_timer(flash_time).timeout
-		await get_tree().create_timer(1).timeout
 		set_collision_layer_value(2, true)
 		return
 	if color == 'green':

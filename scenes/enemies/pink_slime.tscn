@@ -1,21 +1,42 @@
-[gd_scene load_steps=8 format=3 uid="uid://b6dl5srprq6yp"]
+[gd_scene load_steps=11 format=3 uid="uid://b6dl5srprq6yp"]
 
-[ext_resource type="Script" path="res://scripts/misc_classes/enemy.gd" id="1_2xo3e"]
-[ext_resource type="Texture2D" uid="uid://dixvdgedy6d3t" path="res://assets/sprites/enemies/enemy_slime.png" id="2_orkjh"]
+[ext_resource type="Script" path="res://scripts/enemy_scripts/pink_slime.gd" id="1_0ebjo"]
+[ext_resource type="Texture2D" uid="uid://dixvdgedy6d3t" path="res://assets/sprites/enemies/enemy_slime.png" id="2_k01um"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_a2p7x"]
-atlas = ExtResource("2_orkjh")
+[sub_resource type="AtlasTexture" id="AtlasTexture_i5f70"]
+atlas = ExtResource("2_k01um")
 region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6tm1b"]
+atlas = ExtResource("2_k01um")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rgewo"]
+atlas = ExtResource("2_k01um")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wvctq"]
+atlas = ExtResource("2_k01um")
+region = Rect2(96, 0, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_iw5u1"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_a2p7x")
+"texture": SubResource("AtlasTexture_i5f70")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6tm1b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rgewo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wvctq")
 }],
 "loop": true,
 "name": &"idle",
-"speed": 5.0
+"speed": 6.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2hmwu"]
@@ -28,16 +49,18 @@ radius = 12.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_lsaab"]
 radius = 64.0
 
-[node name="EnemyPinkSlime" type="CharacterBody2D"]
+[node name="PinkSlime" type="CharacterBody2D"]
 collision_layer = 16
-collision_mask = 5
-script = ExtResource("1_2xo3e")
+collision_mask = 21
+script = ExtResource("1_0ebjo")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -16)
 sprite_frames = SubResource("SpriteFrames_iw5u1")
 animation = &"idle"
 autoplay = "idle"
+frame_progress = 0.440859
+offset = Vector2(0, 3)
 
 [node name="collision" type="CollisionShape2D" parent="."]
 position = Vector2(0, -7)
