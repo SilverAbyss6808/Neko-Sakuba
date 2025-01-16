@@ -15,34 +15,25 @@ var player = null
 
 static var enemy_type = { 
 	'default':['health','max_health','min_health','damage','scene','speed','attack_type'],
-	'pink_slime':[5,5,0,1,preload("res://scenes/enemies/pink_slime.tscn"),50,'melee']
+	'pink_slime':[5,5,0,5,preload("res://scenes/enemies/pink_slime.tscn"),50,'melee']
 }
 
+func _init() -> void:
+	set_stats()
+	print(self.type + ' spawned with health=' + str(self.health) + ', max_health=' + str(self.max_health) + ', min_health=' + str(self.min_health) + ', damage=' + str(self.damage) + ', speed=' + str(self.speed) + ', attack_type=' + self.attack_type)
+
+
 func _ready() -> void:
-	# spawn_enemy('pink_slime', Vector2(500,-250))
 	pass
-	
+		
 func _physics_process(delta: float) -> void:
 	match attack_type:
 		'melee': run_melee_behav()
 
-static func new_enemy(type:='default',caller:Node2D=null, position:=Vector2(0,0)) -> Enemy:
-	
+static func add_enemy(type:='default',caller:Node2D=null, position:=Vector2(0,0)) -> Enemy:
 	var spawned_enemy = enemy_type[type][4].instantiate()
-	
-
-	spawned_enemy.health = enemy_type[type][0]
-	spawned_enemy.max_health = enemy_type[type][1]
-	spawned_enemy.min_health = enemy_type[type][2]
-	spawned_enemy.damage = enemy_type[type][3]
-	spawned_enemy.speed = enemy_type[type][5]
-	spawned_enemy.attack_type = enemy_type[type][6]
-
-	print(type + ' spawned with health=' + str(health) + ', max_health=' + str(max_health) + ', min_health=' + str(min_health) + ', damage=' + str(damage) + ', speed=' + str(speed) + ', attack_type=' + attack_type)
-	
 	spawned_enemy.global_position = position
 	caller.add_child(spawned_enemy)
-	
 	return spawned_enemy
 	
 func take_damage(amount):
@@ -53,6 +44,14 @@ func take_damage(amount):
 func die():
 	# play death animation
 	queue_free()
+	
+func set_stats():
+	self.health = enemy_type[self.type][0]
+	self.max_health = enemy_type[self.type][1]
+	self.min_health = enemy_type[self.type][2]
+	self.damage = enemy_type[self.type][3]
+	self.speed = enemy_type[self.type][5]
+	self.attack_type = enemy_type[self.type][6]
 	
 func run_melee_behav():
 	if chase_player:

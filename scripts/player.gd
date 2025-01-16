@@ -4,6 +4,7 @@ extends CharacterBody2D
 @export var speed_run = 150.0
 
 @onready var sprite = $AnimatedSprite2D
+@onready var camera: Camera2D = $Camera2D
 @onready var user_interface: CanvasLayer = $Camera2D/UserInterface
 
 var last_pressed_key = "s"
@@ -125,12 +126,13 @@ func regen_stamina():
 		
 func sprite_flash(color):
 	var flash_time = 0.05
+	var orig_color = self.modulate
 	if color == 'red':
 		set_collision_layer_value(2, false)
 		for i in range(0,5):
-			sprite.modulate = Color(1,0,0,0.5)
+			sprite.modulate = Color(1,1,1,0.1)
 			await get_tree().create_timer(flash_time).timeout
-			sprite.modulate = Color(1,1,1)
+			sprite.modulate = orig_color
 			await get_tree().create_timer(flash_time).timeout
 		set_collision_layer_value(2, true)
 		return
@@ -140,5 +142,20 @@ func sprite_flash(color):
 			await get_tree().create_timer(flash_time).timeout
 			sprite.modulate = Color(1,1,1)
 			await get_tree().create_timer(flash_time).timeout
+			flash_time -= 0.01
 		return
 	print('Color not red or green.')
+	
+func set_camera_bounds(ground_layer: TileMapLayer):
+	var rectangle = ground_layer.get_used_rect()
+	var tile_size = ground_layer.rendering_quadrant_size
+	
+	print(rectangle)
+	print(tile_size)
+	
+	camera.limit_bottom = -rectangle.position.y
+	camera.limit_left = rectangle.position.x * tile_size
+	#camera.limit_right = rectangle.size.x * tile_size
+	#camera.limit_top = rectangle.size.y * tile_size
+	
+	

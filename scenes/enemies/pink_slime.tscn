@@ -44,7 +44,7 @@ radius = 7.0
 height = 16.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_w847c"]
-radius = 12.0
+radius = 9.05539
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_lsaab"]
 radius = 64.0
@@ -72,7 +72,7 @@ collision_layer = 0
 collision_mask = 2
 
 [node name="hitbox" type="CollisionShape2D" parent="damage_area"]
-position = Vector2(0, -8)
+position = Vector2(0, -1)
 shape = SubResource("CircleShape2D_w847c")
 
 [node name="detection_area" type="Area2D" parent="."]

@@ -27,6 +27,10 @@ DebugTerminal="*res://scenes/utilities/debug_terminal.tscn"
 
 general/balloon_path="res://dialogue/dialogue_assets/balloon.tscn"
 
+[display]
+
+mouse_cursor/custom_image="res://assets/cursor_slime.png"
+
 [editor]
 
 version_control/plugin_name="GitPlugin"
