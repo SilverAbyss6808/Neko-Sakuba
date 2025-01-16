@@ -47,12 +47,16 @@ func _on_text_submitted(command):
 		update_console('ERROR: ' + expression.get_error_text())
 		return
 		
-	var result = expression.execute([], Global)
+	var result = expression.execute([], Global.current_scene)
 	
 	if expression.has_execute_failed() == false:
-		update_console(str(result))
+		if result != null:
+			update_console(str(result))
+			print(str(result))
+		else:
+			update_console('Execution successful.')
 	else:
-		update_console('Execution failed.')
+		update_console('Execution failed. See debugger.')
 		
 func resize_terminal():
 	# resize terminal (scales vbox automatically)

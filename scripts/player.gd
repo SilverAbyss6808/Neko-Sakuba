@@ -151,11 +151,10 @@ func set_camera_bounds(ground_layer: TileMapLayer):
 	var tile_size = ground_layer.rendering_quadrant_size
 	
 	print(rectangle)
-	print(tile_size)
 	
-	camera.limit_bottom = -rectangle.position.y
 	camera.limit_left = rectangle.position.x * tile_size
-	#camera.limit_right = rectangle.size.x * tile_size
-	#camera.limit_top = rectangle.size.y * tile_size
+	camera.limit_right = rectangle.size.x * tile_size
 	
+	camera.limit_top = -rectangle.size.y * tile_size
+	camera.limit_bottom = 0
 	

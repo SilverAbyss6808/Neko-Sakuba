@@ -19,18 +19,19 @@ static var enemy_type = {
 }
 
 func _init() -> void:
+	# SETS STATS OF BOTH PRESET AND DYNAMIC ENEMIES
 	set_stats()
 	print(self.type + ' spawned with health=' + str(self.health) + ', max_health=' + str(self.max_health) + ', min_health=' + str(self.min_health) + ', damage=' + str(self.damage) + ', speed=' + str(self.speed) + ', attack_type=' + self.attack_type)
-
 
 func _ready() -> void:
 	pass
 		
 func _physics_process(delta: float) -> void:
 	match attack_type:
-		'melee': run_melee_behav()
+		'melee': melee_behav()
 
-static func add_enemy(type:='default',caller:Node2D=null, position:=Vector2(0,0)) -> Enemy:
+static func add_enemy(type:='default',caller:Node2D=null, position=Global.player.global_position) -> Enemy:
+	# ADDS NEW ENEMY FROM CODE
 	var spawned_enemy = enemy_type[type][4].instantiate()
 	spawned_enemy.global_position = position
 	caller.add_child(spawned_enemy)
@@ -53,11 +54,34 @@ func set_stats():
 	self.speed = enemy_type[self.type][5]
 	self.attack_type = enemy_type[self.type][6]
 	
-func run_melee_behav():
+func melee_behav():
 	if chase_player:
 		position += (player.position - position) / speed
 	if damage_player:
 		player.take_damage(damage)
+		
+#func idle_behav():
+	#var pos_to_change = randi_range(-1,1)
+	#print(pos_to_change)
+	#var move_x = false
+	#var move_y = false
+	#if chase_player == false:
+		#var x_position = randi_range(-10,10)
+		#var y_position = randi_range(-10,10)
+		#match pos_to_change:
+			#1: 
+				#move_x = true
+				#move_y = false
+			#-1:
+				#move_x = false
+				#move_y = true
+			#0:
+				#move_x = false
+				#move_y = false
+		#if move_x:
+			#self.position.x += x_position / speed
+		#if move_y:
+			#self.position.y += y_position / speed
 
 func _on_detection_area_body_entered(body: Node2D) -> void:
 	player = body

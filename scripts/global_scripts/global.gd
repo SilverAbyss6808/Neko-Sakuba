@@ -4,8 +4,8 @@ extends Node
 
 var current_scene_paused = false
 var dialogue_running = false
-var current_scene: String
-var prev_scene: String
+var current_scene
+var prev_scene
 
 func _ready():
 	pass
