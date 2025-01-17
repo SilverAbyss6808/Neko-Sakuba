@@ -6,10 +6,15 @@ extends CharacterBody2D
 @onready var sprite = $AnimatedSprite2D
 @onready var camera: Camera2D = $Camera2D
 @onready var user_interface: CanvasLayer = $Camera2D/UserInterface
+@onready var attack_radius: Area2D = $attack_radius
 
 var last_pressed_key = "s"
+var faced_direction = 'forward'
 var can_move = true
 var speed = speed_walk
+
+var item_cooldown_time := 1
+var item_on_cooldown := false
 
 var player_name = "Player"
 
@@ -23,14 +28,20 @@ var player_max_stamina = 100
 var player_min_stamina = 0
 var player_stamina_regen_multiplier = 1
 
-var player_base_attack = 10
+var player_base_attack = 1
 var player_attack_multiplier = 1
 var player_base_defense = 10
 var player_defense_multiplier = 1
 
+var target_enemy = null
+
 func _ready():
 	Global.player = self
-
+	
+func _process(delta: float) -> void:
+	if Input.is_action_pressed('use_item') && item_on_cooldown == false:
+		attack()
+		
 func _physics_process(_delta):
 	# variables
 	var dirX = Input.get_axis("left", "right")
@@ -68,15 +79,19 @@ func _physics_process(_delta):
 			if dirY > 0:
 				sprite.play("walk_forward")
 				last_pressed_key = "s"
+				faced_direction = 'forward'
 			elif dirY < 0:
 				sprite.play("walk_away")
 				last_pressed_key = "w"
+				faced_direction = 'away'
 			elif dirX > 0:
 				sprite.play("walk_right")
 				last_pressed_key = "d"
+				faced_direction = 'right'
 			elif dirX < 0:
 				sprite.play("walk_left")
 				last_pressed_key = "a"
+				faced_direction = 'left'
 		
 		# execute movement
 		move_and_slide()
@@ -101,8 +116,8 @@ func take_damage(damage_amount):
 		#print('Damage not an integer or float.')
 
 # TODO: fill in once enemy class declared
-func deal_damage(target, damage_amount):
-	pass
+func deal_damage(target: Enemy):
+	target.take_damage(player_base_attack * player_attack_multiplier)
 
 func heal_damage(heal_amount):
 	player_health += heal_amount
@@ -150,7 +165,7 @@ func set_camera_bounds(ground_layer: TileMapLayer):
 	var rectangle = ground_layer.get_used_rect()
 	var tile_size = ground_layer.rendering_quadrant_size
 	
-	print(rectangle)
+	# print(rectangle)
 	
 	camera.limit_left = rectangle.position.x * tile_size
 	camera.limit_right = rectangle.size.x * tile_size
@@ -158,3 +173,21 @@ func set_camera_bounds(ground_layer: TileMapLayer):
 	camera.limit_top = -rectangle.size.y * tile_size
 	camera.limit_bottom = 0
 	
+func attack():
+	item_on_cooldown = true
+	match faced_direction:
+		'forward': sprite.play('attack_forward')
+		'away': sprite.play('attack_away')
+		'right': sprite.play("attack_right")
+		'left': sprite.play('attack_left')
+	if target_enemy != null:
+		deal_damage(target_enemy)
+	await get_tree().create_timer(item_cooldown_time).timeout
+	item_on_cooldown = false
+	
+
+func _on_attack_radius_body_entered(body: Node2D) -> void:
+	target_enemy = body
+
+func _on_attack_radius_body_exited(body: Node2D) -> void:
+	target_enemy = null
