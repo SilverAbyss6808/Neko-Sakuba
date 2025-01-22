@@ -38,6 +38,7 @@ static func add_enemy(type:='default',caller:Node2D=null, position=Global.player
 	return spawned_enemy
 	
 func take_damage(amount):
+	sprite_flash()
 	health -= amount
 	if health < min_health:
 		die()
@@ -82,6 +83,16 @@ func melee_behav():
 			#self.position.x += x_position / speed
 		#if move_y:
 			#self.position.y += y_position / speed
+			
+func sprite_flash():
+	var flash_time = 0.05
+	var orig_color = self.modulate
+	for i in range(0,5):
+		self.modulate = Color(1,1,1,0.1)
+		await get_tree().create_timer(flash_time).timeout
+		self.modulate = orig_color
+		await get_tree().create_timer(flash_time).timeout
+	return
 
 func _on_detection_area_body_entered(body: Node2D) -> void:
 	player = body

@@ -16,6 +16,7 @@ var speed = speed_walk
 
 var item_cooldown_time := 0.5
 var item_on_cooldown := false
+var animation_playing := false
 
 var player_name = "Player"
 
@@ -41,8 +42,9 @@ func _ready():
 	Global.player = self
 	
 func _process(delta: float) -> void:
-	if Input.is_action_just_pressed('use_item') && item_on_cooldown == false:
+	if Input.is_action_just_pressed('use_item') && item_on_cooldown == false && animation_playing == false:
 		attack()
+		await play_animation('attack')
 
 func _physics_process(_delta):
 	# variables
@@ -172,20 +174,22 @@ func set_camera_bounds(ground_layer: TileMapLayer):
 	
 	camera.limit_top = -rectangle.size.y * tile_size
 	camera.limit_bottom = 0
-	
+
+func play_animation(type: String):
+		sprite.play(str(type + '_' + faced_direction))
+		sprite.animation_finished.emit()
+
 func attack():
-	# item_on_cooldown = true
-	match faced_direction:
-		'forward': sprite.play('attack_forward')
-		'away': sprite.play('attack_away')
-		'right': sprite.play("attack_right")
-		'left': sprite.play('attack_left')	
-	await sprite.animation_finished
-	print(sprite.animation_finished)
-	#if target_enemy != null:
-		#deal_damage(target_enemy)
-	#await get_tree().create_timer(item_cooldown_time).timeout
-	#item_on_cooldown = false
+	can_move = false
+	item_on_cooldown = true
+	
+	if target_enemy != null:
+		deal_damage(target_enemy)
+		
+	await get_tree().create_timer(item_cooldown_time).timeout
+	can_move = true
+	item_on_cooldown = false
+	
 
 func _on_attack_radius_body_entered(body: Node2D) -> void:
 	target_enemy = body
