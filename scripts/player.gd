@@ -1,9 +1,10 @@
 extends CharacterBody2D
 
+#region variables
 @export var speed_walk = 100.0 # export for editing from inspector
 @export var speed_run = 150.0
 
-@onready var sprite = $AnimatedSprite2D
+@onready var sprite = $sprite
 @onready var camera: Camera2D = $Camera2D
 @onready var user_interface: CanvasLayer = $Camera2D/UserInterface
 @onready var attack_radius: Area2D = $attack_radius
@@ -13,7 +14,7 @@ var faced_direction = 'forward'
 var can_move = true
 var speed = speed_walk
 
-var item_cooldown_time := 1
+var item_cooldown_time := 0.5
 var item_on_cooldown := false
 
 var player_name = "Player"
@@ -34,14 +35,15 @@ var player_base_defense = 10
 var player_defense_multiplier = 1
 
 var target_enemy = null
+#endregion
 
 func _ready():
 	Global.player = self
 	
 func _process(delta: float) -> void:
-	if Input.is_action_pressed('use_item') && item_on_cooldown == false:
+	if Input.is_action_just_pressed('use_item') && item_on_cooldown == false:
 		attack()
-		
+
 func _physics_process(_delta):
 	# variables
 	var dirX = Input.get_axis("left", "right")
@@ -165,8 +167,6 @@ func set_camera_bounds(ground_layer: TileMapLayer):
 	var rectangle = ground_layer.get_used_rect()
 	var tile_size = ground_layer.rendering_quadrant_size
 	
-	# print(rectangle)
-	
 	camera.limit_left = rectangle.position.x * tile_size
 	camera.limit_right = rectangle.size.x * tile_size
 	
@@ -174,17 +174,18 @@ func set_camera_bounds(ground_layer: TileMapLayer):
 	camera.limit_bottom = 0
 	
 func attack():
-	item_on_cooldown = true
+	# item_on_cooldown = true
 	match faced_direction:
 		'forward': sprite.play('attack_forward')
 		'away': sprite.play('attack_away')
 		'right': sprite.play("attack_right")
-		'left': sprite.play('attack_left')
-	if target_enemy != null:
-		deal_damage(target_enemy)
-	await get_tree().create_timer(item_cooldown_time).timeout
-	item_on_cooldown = false
-	
+		'left': sprite.play('attack_left')	
+	await sprite.animation_finished
+	print(sprite.animation_finished)
+	#if target_enemy != null:
+		#deal_damage(target_enemy)
+	#await get_tree().create_timer(item_cooldown_time).timeout
+	#item_on_cooldown = false
 
 func _on_attack_radius_body_entered(body: Node2D) -> void:
 	target_enemy = body
