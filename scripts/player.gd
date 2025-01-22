@@ -71,43 +71,19 @@ func _physics_process(_delta):
 			
 		## determine animation played
 		if dirX == 0 && dirY == 0:
-			if last_pressed_key == "s":
-				sprite.play("idle_forward")
-			elif last_pressed_key == "w":
-				sprite.play("idle_away")
-			elif last_pressed_key == "a":
-				sprite.play("idle_left")
-			elif last_pressed_key == "d":
-				sprite.play("idle_right")
+			play_animation('idle')
 		else:
 			if dirY > 0:
-				sprite.play("walk_forward")
-				last_pressed_key = "s"
 				faced_direction = 'forward'
 			elif dirY < 0:
-				sprite.play("walk_away")
-				last_pressed_key = "w"
 				faced_direction = 'away'
 			elif dirX > 0:
-				sprite.play("walk_right")
-				last_pressed_key = "d"
 				faced_direction = 'right'
 			elif dirX < 0:
-				sprite.play("walk_left")
-				last_pressed_key = "a"
 				faced_direction = 'left'
-		
+			play_animation('walk')
 		# execute movement
 		move_and_slide()
-	else:
-		if last_pressed_key == "s":
-			sprite.play("idle_forward")
-		elif last_pressed_key == "w":
-			sprite.play("idle_away")
-		elif last_pressed_key == "a":
-			sprite.play("idle_left")
-		elif last_pressed_key == "d":
-			sprite.play("idle_right")
 
 func take_damage(damage_amount):
 	#if typeof(damage_amount) == TYPE_INT || typeof(damage_amount) == TYPE_FLOAT:
@@ -176,8 +152,9 @@ func set_camera_bounds(ground_layer: TileMapLayer):
 	camera.limit_bottom = 0
 
 func play_animation(type: String):
-		sprite.play(str(type + '_' + faced_direction))
-		sprite.animation_finished.emit()
+	sprite.play(str(type + '_' + faced_direction))
+	#if sprite.animation_finished:
+		#return
 
 func attack():
 	can_move = false
@@ -196,3 +173,6 @@ func _on_attack_radius_body_entered(body: Node2D) -> void:
 
 func _on_attack_radius_body_exited(body: Node2D) -> void:
 	target_enemy = null
+
+func _on_sprite_animation_finished() -> void:
+	print('animation_finished signal emitted')
