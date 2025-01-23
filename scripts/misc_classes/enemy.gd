@@ -1,6 +1,7 @@
 extends CharacterBody2D
 class_name Enemy
 
+#region variables
 static var health
 static var max_health
 static var min_health
@@ -15,6 +16,9 @@ var damage_player = false
 var player = null
 
 @export var time_between_idle_movements := 5.0
+
+signal idle_movement_complete
+#endregion
 
 static var enemy_type: Dictionary = { 
 	'default':['health','max_health','min_health','damage','scene','speed','attack_type'],
@@ -81,10 +85,12 @@ func idle_behav(delta):
 		idle = true
 
 func move_toward_position(delta, target_position: Vector2):
+	var i = 0
 	while self.position != target_position:
-		print('moving...')
+		print('moving...' + str(i))
 		self.position = (target_position - self.position) / speed
-		await get_tree().create_timer(1/speed).timeout
+		await get_tree().create_timer(delta).timeout
+		i += 1
 	print('idle movement complete.')
 
 func sprite_flash_no_iframe():
