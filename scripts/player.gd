@@ -42,9 +42,8 @@ func _ready():
 	Global.player = self
 	
 func _process(delta: float) -> void:
-	if Input.is_action_just_pressed('use_item') && item_on_cooldown == false && animation_playing == false:
+	if Input.is_action_just_pressed('use_item') && item_on_cooldown == false:
 		attack()
-		await play_animation('attack')
 
 func _physics_process(_delta):
 	# variables
@@ -59,29 +58,20 @@ func _physics_process(_delta):
 		sprite.speed_scale = 1
 	
 	if can_move:
-		# determine speed and direction
-		if dirX:
-			velocity.x = dirX * speed
-		else:
-			velocity.x = move_toward(velocity.x, 0, speed)
-		if dirY:
-			velocity.y = dirY * speed
-		else:
-			velocity.y = move_toward(velocity.y, 0, speed)
+		if dirX: velocity.x = dirX * speed
+		else: velocity.x = move_toward(velocity.x, 0, speed)
+		
+		if dirY: velocity.y = dirY * speed
+		else: velocity.y = move_toward(velocity.y, 0, speed)
 			
-		## determine animation played
-		if dirX == 0 && dirY == 0:
-			play_animation('idle')
+		if dirX == 0 && dirY == 0: play_animation('idle')
 		else:
-			if dirY > 0:
-				faced_direction = 'forward'
-			elif dirY < 0:
-				faced_direction = 'away'
-			elif dirX > 0:
-				faced_direction = 'right'
-			elif dirX < 0:
-				faced_direction = 'left'
+			if dirY > 0: faced_direction = 'forward'
+			elif dirY < 0: faced_direction = 'away'
+			elif dirX > 0: faced_direction = 'right'
+			elif dirX < 0: faced_direction = 'left'
 			play_animation('walk')
+
 		# execute movement
 		move_and_slide()
 
@@ -151,23 +141,24 @@ func set_camera_bounds(ground_layer: TileMapLayer):
 	camera.limit_top = -rectangle.size.y * tile_size
 	camera.limit_bottom = 0
 
-func play_animation(type: String):
-	sprite.play(str(type + '_' + faced_direction))
-	#if sprite.animation_finished:
-		#return
+func play_animation(type: String): 
+	if type == 'idle' || type == 'walk': can_move = true
+	else: can_move = false
+	
+	var new_anim: StringName = str(type + '_' + faced_direction)
+	sprite.play(new_anim)
 
 func attack():
-	can_move = false
 	item_on_cooldown = true
 	
 	if target_enemy != null:
 		deal_damage(target_enemy)
+	
+	play_animation('attack')
 		
 	await get_tree().create_timer(item_cooldown_time).timeout
-	can_move = true
 	item_on_cooldown = false
 	
-
 func _on_attack_radius_body_entered(body: Node2D) -> void:
 	target_enemy = body
 
@@ -175,4 +166,5 @@ func _on_attack_radius_body_exited(body: Node2D) -> void:
 	target_enemy = null
 
 func _on_sprite_animation_finished() -> void:
-	print('animation_finished signal emitted')
+	# THIS ONLY TRIGGERS IF THE ANIMATION PLAYED IS NOT IDLE OR WALK
+	can_move = true
