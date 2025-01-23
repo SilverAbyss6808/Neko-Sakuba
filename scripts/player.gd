@@ -9,14 +9,12 @@ extends CharacterBody2D
 @onready var user_interface: CanvasLayer = $Camera2D/UserInterface
 @onready var attack_radius: Area2D = $attack_radius
 
-var last_pressed_key = "s"
 var faced_direction = 'forward'
 var can_move = true
 var speed = speed_walk
 
 var item_cooldown_time := 0.5
 var item_on_cooldown := false
-var animation_playing := false
 
 var player_name = "Player"
 
@@ -79,7 +77,7 @@ func take_damage(damage_amount):
 	#if typeof(damage_amount) == TYPE_INT || typeof(damage_amount) == TYPE_FLOAT:
 	player_health -= damage_amount
 	user_interface.update_ui()
-	sprite_flash('red') # INCLUDES IFRAMES
+	sprite_flash_with_iframes()
 	if player_health <= player_min_health:
 		player_die()
 	#else:
@@ -92,7 +90,7 @@ func deal_damage(target: Enemy):
 func heal_damage(heal_amount):
 	player_health += heal_amount
 	user_interface.update_ui()
-	sprite_flash('green')
+	sprite_flash_with_iframes()
 	if player_health >= player_max_health:
 		player_health = player_max_health
 		
@@ -109,27 +107,17 @@ func regen_stamina():
 		player_stamina += player_stamina_regen_multiplier
 		user_interface.update_ui()
 		
-func sprite_flash(color):
+func sprite_flash_with_iframes():
 	var flash_time = 0.05
 	var orig_color = self.modulate
-	if color == 'red':
-		set_collision_layer_value(2, false)
-		for i in range(0,5):
-			sprite.modulate = Color(1,1,1,0.1)
-			await get_tree().create_timer(flash_time).timeout
-			sprite.modulate = orig_color
-			await get_tree().create_timer(flash_time).timeout
-		set_collision_layer_value(2, true)
-		return
-	if color == 'green':
-		for i in range(0,5):
-			sprite.modulate = Color(0,1,0,0.5)
-			await get_tree().create_timer(flash_time).timeout
-			sprite.modulate = Color(1,1,1)
-			await get_tree().create_timer(flash_time).timeout
-			flash_time -= 0.01
-		return
-	print('Color not red or green.')
+	set_collision_layer_value(2, false)
+	for i in range(0,5):
+		self.modulate = Color(1,1,1,0.1)
+		await get_tree().create_timer(flash_time).timeout
+		self.modulate = orig_color
+		await get_tree().create_timer(flash_time).timeout
+	set_collision_layer_value(2, true)
+	return
 	
 func set_camera_bounds(ground_layer: TileMapLayer):
 	var rectangle = ground_layer.get_used_rect()
@@ -142,8 +130,7 @@ func set_camera_bounds(ground_layer: TileMapLayer):
 	camera.limit_bottom = 0
 
 func play_animation(type: String): 
-	if type == 'idle' || type == 'walk': can_move = true
-	else: can_move = false
+	if type != 'idle' && type != 'walk': can_move = false
 	
 	var new_anim: StringName = str(type + '_' + faced_direction)
 	sprite.play(new_anim)

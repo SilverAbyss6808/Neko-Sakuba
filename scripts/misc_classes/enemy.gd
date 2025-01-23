@@ -9,11 +9,14 @@ static var scene
 static var speed
 static var attack_type
 
+var idle = true
 var chase_player = false
 var damage_player = false
 var player = null
 
-static var enemy_type = { 
+@export var time_between_idle_movements := 5.0
+
+static var enemy_type: Dictionary = { 
 	'default':['health','max_health','min_health','damage','scene','speed','attack_type'],
 	'pink_slime':[5,5,0,5,preload("res://scenes/enemies/pink_slime.tscn"),50,'melee']
 }
@@ -23,12 +26,12 @@ func _init() -> void:
 	set_stats()
 	print(self.type + ' spawned with health=' + str(self.health) + ', max_health=' + str(self.max_health) + ', min_health=' + str(self.min_health) + ', damage=' + str(self.damage) + ', speed=' + str(self.speed) + ', attack_type=' + self.attack_type)
 
-func _ready() -> void:
-	pass
-		
 func _physics_process(delta: float) -> void:
-	match attack_type:
-		'melee': melee_behav()
+	if chase_player:
+		match attack_type:
+			'melee': melee_behav()
+	else:
+		idle_behav(delta)
 
 static func add_enemy(type:='default',caller:Node2D=null, position=Global.player.global_position) -> Enemy:
 	# ADDS NEW ENEMY FROM CODE
@@ -56,34 +59,34 @@ func set_stats():
 	self.attack_type = enemy_type[self.type][6]
 	
 func melee_behav():
-	if chase_player:
-		position += (player.position - position) / speed
+	position += (player.position - position) / speed
 	if damage_player:
 		player.take_damage(damage)
 		
-#func idle_behav():
-	#var pos_to_change = randi_range(-1,1)
-	#print(pos_to_change)
-	#var move_x = false
-	#var move_y = false
-	#if chase_player == false:
-		#var x_position = randi_range(-10,10)
-		#var y_position = randi_range(-10,10)
-		#match pos_to_change:
-			#1: 
-				#move_x = true
-				#move_y = false
-			#-1:
-				#move_x = false
-				#move_y = true
-			#0:
-				#move_x = false
-				#move_y = false
-		#if move_x:
-			#self.position.x += x_position / speed
-		#if move_y:
-			#self.position.y += y_position / speed
-			
+func idle_behav(delta):
+	if idle == true:
+		idle = false
+		
+		var pos_to_change = randi_range(-1,1)
+		
+		var x_position = randi_range(-50,50)
+		var y_position = randi_range(-50,50)
+		
+		match pos_to_change:
+			1: move_toward_position(delta, Vector2(self.position.x + x_position, self.position.y))
+			0: pass
+			-1: move_toward_position(delta, Vector2(self.position.x, self.position.y + y_position))
+		
+		await get_tree().create_timer(time_between_idle_movements).timeout
+		idle = true
+
+func move_toward_position(delta, target_position: Vector2):
+	while self.position != target_position:
+		print('moving...')
+		self.position = (target_position - self.position) / speed
+		await get_tree().create_timer(1/speed).timeout
+	print('idle movement complete.')
+
 func sprite_flash_no_iframe():
 	var flash_time = 0.05
 	var orig_color := self.modulate
