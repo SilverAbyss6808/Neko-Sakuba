@@ -7,7 +7,7 @@ static var max_health
 static var min_health
 static var damage
 static var scene
-static var speed
+static var speed: int
 static var attack_type
 
 var idle = true
@@ -32,6 +32,7 @@ func _init() -> void:
 
 func _physics_process(delta: float) -> void:
 	if chase_player:
+		idle = false
 		match attack_type:
 			'melee': melee_behav()
 	else:
@@ -68,30 +69,42 @@ func melee_behav():
 		player.take_damage(damage)
 		
 func idle_behav(delta):
+	var pos_to_change = randi_range(-1,1)
+	var range_num = 50
+	
 	if idle == true:
 		idle = false
 		
-		var pos_to_change = randi_range(-1,1)
+		print(str(pos_to_change))
 		
-		var x_position = randi_range(-50,50)
-		var y_position = randi_range(-50,50)
+		var x_position = randi_range(-range_num,range_num)
+		var y_position = randi_range(-range_num,range_num)
 		
 		match pos_to_change:
-			1: move_toward_position(delta, Vector2(self.position.x + x_position, self.position.y))
+			1: await move_toward_position(delta, Vector2(self.global_position.x + x_position, self.global_position.y))
 			0: pass
-			-1: move_toward_position(delta, Vector2(self.position.x, self.position.y + y_position))
+			-1: await move_toward_position(delta, Vector2(self.global_position.x, self.global_position.y + y_position))
 		
 		await get_tree().create_timer(time_between_idle_movements).timeout
 		idle = true
-
-func move_toward_position(delta, target_position: Vector2):
-	var i = 0
-	while self.position != target_position:
-		print('moving...' + str(i))
-		self.position = (target_position - self.position) / speed
+		
+func move_toward_position(delta, target_position):
+	
+	while self.global_position.round() != target_position && chase_player == false:
+		idle = false
+		self.global_position += (target_position - self.global_position) / 10
+		print(str(self.global_position))
 		await get_tree().create_timer(delta).timeout
-		i += 1
-	print('idle movement complete.')
+		
+	if chase_player:
+			self.global_position = Vector2i(self.global_position)
+			print('idle movement terminated early. enemy position: ' + str(self.global_position))
+			return
+	
+	self.global_position = target_position
+	
+	print('idle movement complete. enemy position: ' + str(self.global_position))
+	return
 
 func sprite_flash_no_iframe():
 	var flash_time = 0.05
