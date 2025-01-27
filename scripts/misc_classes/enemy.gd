@@ -73,17 +73,14 @@ func idle_behav(delta):
 	var range_num = 50
 	
 	if idle == true:
+		
 		idle = false
-		
-		print(str(pos_to_change))
-		
-		var x_position = randi_range(-range_num,range_num)
-		var y_position = randi_range(-range_num,range_num)
+		var add_to_position = randi_range(-range_num,range_num)
 		
 		match pos_to_change:
-			1: await move_toward_position(delta, Vector2(self.global_position.x + x_position, self.global_position.y))
-			0: pass
-			-1: await move_toward_position(delta, Vector2(self.global_position.x, self.global_position.y + y_position))
+			1: await move_toward_position(delta, Vector2(self.global_position.x + add_to_position, self.global_position.y))
+			0: print('no movement.')
+			-1: await move_toward_position(delta, Vector2(self.global_position.x, self.global_position.y + add_to_position))
 		
 		await get_tree().create_timer(time_between_idle_movements).timeout
 		idle = true
@@ -92,16 +89,15 @@ func move_toward_position(delta, target_position):
 	
 	while self.global_position.round() != target_position && chase_player == false:
 		idle = false
-		self.global_position += (target_position - self.global_position) / 10
-		print(str(self.global_position))
+		self.global_position += (target_position - self.global_position) / speed
 		await get_tree().create_timer(delta).timeout
 		
-	if chase_player:
-			self.global_position = Vector2i(self.global_position)
-			print('idle movement terminated early. enemy position: ' + str(self.global_position))
-			return
+		if chase_player:
+				self.global_position = Vector2i(self.global_position)
+				print('idle movement terminated early. enemy position: ' + str(self.global_position))
+				return
 	
-	self.global_position = target_position
+	self.global_position = Vector2i(self.global_position)
 	
 	print('idle movement complete. enemy position: ' + str(self.global_position))
 	return
@@ -123,6 +119,7 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
 func _on_detection_area_body_exited(body: Node2D) -> void:
 	player = null
 	chase_player = false
+	self.global_position = Vector2i(self.global_position)
 
 func _on_damage_area_body_entered(body: Node2D) -> void:
 	player = body
