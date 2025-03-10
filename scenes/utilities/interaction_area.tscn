@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dqlk28ia73xt"]
 
-[ext_resource type="Script" path="res://scripts/utility_scripts/interaction_area.gd" id="1_f5uva"]
+[ext_resource type="Script" uid="uid://bd0yfab0yktr6" path="res://scripts/utility_scripts/interaction_area.gd" id="1_f5uva"]
 [ext_resource type="PackedScene" uid="uid://c2m262efaifcc" path="res://scenes/utilities/transition_mask.tscn" id="2_pa7vd"]
 
 [node name="interaction_area" type="Area2D"]

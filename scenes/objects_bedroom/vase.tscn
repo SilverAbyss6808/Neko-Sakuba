@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://ccxjhxjorsjhx"]
 
-[ext_resource type="Script" path="res://scripts/object_scripts/vase.gd" id="1_kh1nv"]
+[ext_resource type="Script" uid="uid://b6jr7qi7qkwup" path="res://scripts/object_scripts/vase.gd" id="1_kh1nv"]
 [ext_resource type="Texture2D" uid="uid://bj4ln2agp48jc" path="res://assets/object_texture_sheets/bedroom_interacts.png" id="2_6hygg"]
 [ext_resource type="PackedScene" uid="uid://dqlk28ia73xt" path="res://scenes/utilities/interaction_area.tscn" id="2_u23fy"]
 [ext_resource type="Resource" uid="uid://db0vl7uhrypcs" path="res://dialogue/dialogue_scripts/dialogue_int_objects.dialogue" id="4_pv8vg"]

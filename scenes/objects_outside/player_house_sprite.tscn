@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://bm47ecbrvike4"]
 
-[ext_resource type="Script" path="res://scripts/object_scripts/enter_player_house.gd" id="1_kri44"]
+[ext_resource type="Script" uid="uid://dulq7ctow1kyl" path="res://scripts/object_scripts/enter_player_house.gd" id="1_kri44"]
 [ext_resource type="Texture2D" uid="uid://dbkwqnkxblyyd" path="res://assets/object_texture_sheets/player_house.png" id="1_kxd81"]
 [ext_resource type="PackedScene" uid="uid://dqlk28ia73xt" path="res://scenes/utilities/interaction_area.tscn" id="2_wi2nt"]
 

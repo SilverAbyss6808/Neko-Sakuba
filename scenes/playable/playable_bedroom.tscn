@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=4 uid="uid://kv8k761srw2"]
 
-[ext_resource type="Script" path="res://scripts/playable_scripts/playable_bedroom.gd" id="1_0eqfi"]
+[ext_resource type="Script" uid="uid://dg0vt60qk66dg" path="res://scripts/playable_scripts/playable_bedroom.gd" id="1_0eqfi"]
 [ext_resource type="PackedScene" uid="uid://kx52fee7ym2q" path="res://scenes/player.tscn" id="1_3cfgm"]
 [ext_resource type="PackedScene" uid="uid://ccxjhxjorsjhx" path="res://scenes/objects_bedroom/vase.tscn" id="3_y86ti"]
 [ext_resource type="Texture2D" uid="uid://d2dndee5ap6pd" path="res://assets/backgrounds/bedroom_placeholder.png" id="4_iapv5"]

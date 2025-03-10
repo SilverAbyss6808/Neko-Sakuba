@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cxirlnb7d1df8"]
 
-[ext_resource type="Script" path="res://scripts/utility_scripts/debug_terminal.gd" id="1_qkf6x"]
-[ext_resource type="Script" path="res://scripts/utility_scripts/scroll_container.gd" id="2_eidka"]
+[ext_resource type="Script" uid="uid://bk2dtmmcpay0b" path="res://scripts/utility_scripts/debug_terminal.gd" id="1_qkf6x"]
+[ext_resource type="Script" uid="uid://ce2r7h0s5dlyo" path="res://scripts/utility_scripts/scroll_container.gd" id="2_eidka"]
 
 [sub_resource type="Theme" id="Theme_5vtbs"]
 resource_local_to_scene = true

@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://c2m262efaifcc"]
 
-[ext_resource type="Script" path="res://scripts/utility_scripts/transition_mask.gd" id="1_5yt6t"]
+[ext_resource type="Script" uid="uid://c3ucbjrmxlba0" path="res://scripts/utility_scripts/transition_mask.gd" id="1_5yt6t"]
 
 [sub_resource type="Animation" id="Animation_mnaih"]
 length = 0.001
@@ -125,10 +125,10 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_yii3v"]
 _data = {
-"RESET": SubResource("Animation_mnaih"),
-"fade_in": SubResource("Animation_d8xqp"),
-"fade_out": SubResource("Animation_gdug5"),
-"loading_screen": SubResource("Animation_73b7y")
+&"RESET": SubResource("Animation_mnaih"),
+&"fade_in": SubResource("Animation_d8xqp"),
+&"fade_out": SubResource("Animation_gdug5"),
+&"loading_screen": SubResource("Animation_73b7y")
 }
 
 [node name="TransitionMask" type="CanvasLayer"]

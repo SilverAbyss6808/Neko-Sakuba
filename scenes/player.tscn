@@ -1,6 +1,6 @@
 [gd_scene load_steps=31 format=3 uid="uid://kx52fee7ym2q"]
 
-[ext_resource type="Script" path="res://scripts/player.gd" id="1_opdrx"]
+[ext_resource type="Script" uid="uid://blitptme8wgei" path="res://scripts/player.gd" id="1_opdrx"]
 [ext_resource type="Texture2D" uid="uid://cjbsockf4ytb6" path="res://assets/sprites/characters/player.png" id="2_dviis"]
 [ext_resource type="PackedScene" uid="uid://qcoc45eqqxq3" path="res://scenes/utilities/user_interface.tscn" id="2_sva71"]
 
@@ -103,7 +103,7 @@ region = Rect2(64, 128, 32, 32)
 [sub_resource type="SpriteFrames" id="SpriteFrames_pl8t6"]
 animations = [{
 "frames": [{
-"duration": 5.0,
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_kgedg")
 }],
 "loop": false,
@@ -111,7 +111,7 @@ animations = [{
 "speed": 5.0
 }, {
 "frames": [{
-"duration": 5.0,
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_i7wah")
 }],
 "loop": false,
@@ -119,7 +119,7 @@ animations = [{
 "speed": 5.0
 }, {
 "frames": [{
-"duration": 5.0,
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_og1yo")
 }],
 "loop": false,
@@ -127,7 +127,7 @@ animations = [{
 "speed": 5.0
 }, {
 "frames": [{
-"duration": 5.0,
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_utjrk")
 }],
 "loop": false,
@@ -255,7 +255,7 @@ zoom = Vector2(3, 3)
 [node name="sprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -16)
 sprite_frames = SubResource("SpriteFrames_pl8t6")
-animation = &"attack_right"
+animation = &"attack_away"
 autoplay = "idle_forward"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

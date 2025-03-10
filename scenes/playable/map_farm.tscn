@@ -1,6 +1,6 @@
 [gd_scene load_steps=12 format=4 uid="uid://cfi0w6d272oft"]
 
-[ext_resource type="Script" path="res://scripts/playable_scripts/map_farm.gd" id="1_04ewn"]
+[ext_resource type="Script" uid="uid://c232oh1uc65ed" path="res://scripts/playable_scripts/map_farm.gd" id="1_04ewn"]
 [ext_resource type="PackedScene" uid="uid://kx52fee7ym2q" path="res://scenes/player.tscn" id="1_8rpy2"]
 [ext_resource type="Texture2D" uid="uid://c7j8ldylbbkdw" path="res://assets/backgrounds/outdoor_tileset.png" id="2_hpmpa"]
 [ext_resource type="PackedScene" uid="uid://bm47ecbrvike4" path="res://scenes/objects_outside/player_house_sprite.tscn" id="3_1lb5g"]
